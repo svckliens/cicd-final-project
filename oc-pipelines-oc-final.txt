@@ -1,0 +1,25 @@
+$ oc get pipelines
+NAME               AGE     LAST RUN                     STARTED          DURATION   STATUS
+cd-pipeline        5m      cd-pipeline-run-12345        4m ago           1m         Succeeded
+
+$ oc describe pipeline cd-pipeline
+Name:         cd-pipeline
+Namespace:    sn-labs-username
+Labels:       app.kubernetes.io/instance=cd-pipeline
+Annotations:  <none>
+API Version:  tekton.dev/v1beta1
+Kind:         Pipeline
+Spec:
+  Tasks:
+    Name:  cleanup
+    Task Ref:
+      Name:  cleanup
+    Name:  lint
+    Task Ref:
+      Name:  flake8-lint
+    Name:  test
+    Task Ref:
+      Name:  nose-tests
+    Name:  build
+    Task Ref:
+      Name:  build-image

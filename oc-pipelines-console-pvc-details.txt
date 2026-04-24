@@ -1,0 +1,19 @@
+$ oc get pvc
+NAME           STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+pipelinerun-pvc Bound    pvc-1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p   1Gi        RWO            ibmc-file-gold 10m
+
+$ oc describe pvc pipelinerun-pvc
+Name:          pipelinerun-pvc
+Namespace:     sn-labs-username
+StorageClass:  ibmc-file-gold
+Status:        Bound
+Volume:        pvc-1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p
+Labels:        <none>
+Annotations:   pv.kubernetes.io/bind-completed: yes
+               pv.kubernetes.io/bound-by-controller: yes
+               volume.beta.kubernetes.io/storage-provisioner: ibm.io/ibmc-file
+Finalizers:    [kubernetes.io/pvc-protection]
+Capacity:      1Gi
+Access Modes:  RWO
+VolumeMode:    Filesystem
+Used By:       pipeline-run-12345-pod-67890

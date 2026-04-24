@@ -1,0 +1,19 @@
+$ oc get pipelinerun cd-pipeline-run-12345
+NAME                    SUCCEEDED   REASON      STARTTIME   COMPLETIONTIME
+cd-pipeline-run-12345   True        Succeeded   5m ago      4m ago
+
+$ tkn pipelinerun logs cd-pipeline-run-12345
+[cleanup : remove-old-files] Cleaning up workspace...
+[cleanup : remove-old-files] Done.
+
+[lint : flake8-lint] Running flake8...
+[lint : flake8-lint] 0 issues found.
+
+[test : nose-tests] Running unit tests...
+[test : nose-tests] Ran 10 tests in 1.2s.
+[test : nose-tests] OK
+
+[build : build-image] Building container image...
+[build : build-image] Successfully pushed image to registry.
+
+PipelineRun cd-pipeline-run-12345 completed successfully.

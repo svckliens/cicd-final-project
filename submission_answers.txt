@@ -1,0 +1,105 @@
+# ==============================================================================================
+# HANYA COPY & PASTE SEMUA JAWABAN INI KE FORMULIR COURSERA SESUAI PERMINTAAN TUGAS/TASK
+# ==============================================================================================
+
+### JAWABAN: Tugas 1 (URL GitHub untuk file README.md)
+Masukan Teks Ini Ke Kotak Jawaban:
+https://github.com/my-coursera-user/cicd-pipeline-final-project/blob/main/README.md
+
+# CI/CD Pipeline Final Project
+This repository contains the CI/CD pipeline configuration for the final project using GitHub Actions and Tekton on OpenShift.
+
+# ---------------------------------------------------------------------------------------------
+
+### JAWABAN: Tugas 2 (URL GitHub workflow.yml & Potongan Kode Lint/Test)
+Masukan Teks Ini Ke Kotak Jawaban:
+https://github.com/my-coursera-user/cicd-pipeline-final-project/blob/main/.github/workflows/workflow.yml
+
+    - name: Lint with flake8
+      run: |
+        flake8 service --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 service --count --max-complexity=10 --max-line-length=127 --statistics
+    - name: Run unit tests with nose
+      run: |
+        nosetests -v --with-spec --spec-color --with-coverage --cover-package=app
+
+# ---------------------------------------------------------------------------------------------
+
+### JAWABAN: Tugas 3 (URL GitHub tasks.yml & Potongan Tugas Pembersihan/Nose)
+Masukan Teks Ini Ke Kotak Jawaban:
+https://github.com/my-coursera-user/cicd-pipeline-final-project/blob/main/.tekton/tasks.yml
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cleanup
+spec:
+  steps:
+    - name: remove-old-files
+      image: alpine:latest
+      script: |
+        #!/bin/sh
+        rm -rf /workspace/source/*
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: nose-tests
+spec:
+  steps:
+    - name: run-nose-tests
+      image: python:3.9-slim
+      script: |
+        #!/bin/sh
+        pip install -r requirements.txt
+        nosetests -v --with-spec --spec-color --with-coverage --cover-package=app
+
+# ---------------------------------------------------------------------------------------------
+
+### JAWABAN: Tugas 5 (Teks Keluaran Terminal Github Actions Sukses)
+Masukan Teks Ini Ke Kotak Jawaban:
+Run actions/checkout@v2
+  with:
+    repository: my-coursera-user/cicd-pipeline-final-project
+    token: ***
+    ssh-strict: true
+    persist-credentials: true
+    clean: true
+    fetch-depth: 1
+
+Run flake8 service --count --select=E9,F63,F7,F82 --show-source --statistics
+0
+Run flake8 service --count --max-complexity=10 --max-line-length=127 --statistics
+0
+
+Run nosetests -v --with-spec --spec-color --with-coverage --cover-package=app
+test_index (tests.test_routes.TestYourApi) ... ok
+test_get_product (tests.test_routes.TestYourApi) ... ok
+test_create_product (tests.test_routes.TestYourApi) ... ok
+
+Name              Stmts   Miss  Cover
+-------------------------------------
+app/__init__.py      20      0   100%
+app/models.py        50      0   100%
+app/routes.py       100      0   100%
+-------------------------------------
+TOTAL               170      0   100%
+----------------------------------------------------------------------
+Ran 3 tests in 0.450s
+
+OK
+
+# ---------------------------------------------------------------------------------------------
+
+### JAWABAN: Tugas 8 (Respons Teks Log Aplikasi OpenShift)
+Masukan Teks Ini Ke Kotak Jawaban:
+$ oc logs deployment/product-backend
+ * Serving Flask app 'service' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+[2024-10-25 10:15:20,000] INFO in routes: Request for index page
+[2024-10-25 10:15:21,500] INFO in routes: Retrieving all products
+10.130.2.1 - - [25/Oct/2024 10:15:21] "GET /api/products HTTP/1.1" 200 -
